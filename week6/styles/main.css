@@ -1,0 +1,40 @@
+header {
+    background-color: gold;
+}
+h1 {
+    size: 80pt;
+    text-align: center;
+}
+
+h2 {
+    size: 48pt;
+    text-align: center;
+}
+
+footer {
+    text-align: right;
+}
+
+p {
+    text-align: center;
+}
+
+#columns {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+}
+
+#left_column {
+    text-align: center;
+    size: 48;
+    display: grid;
+    grid-column: 1/2;
+}
+
+#right_column {
+    text-align: center;
+    size: 48;
+    display: grid;
+    grid-column: 2/3;
+}
