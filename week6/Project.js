@@ -3,53 +3,74 @@
 // replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
 var BTCurl = 'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=CNY&apikey=3CS91X3D308IIDV1';
 var ETHurl = 'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=ETH&market=CNY&apikey=3CS91X3D308IIDV1';
+var APLurl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=AAPL&apikey=3CS91X3D308IIDV1';
+var TESurl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=TSLA&apikey=3CS91X3D308IIDV1';
 
 const bitInfo = document.getElementById('bit');
 const ethInfo = document.getElementById('eth');
 
-async function getCryptoBit(url, id) {
+async function getCryptoInfo(url, id) {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
 
     let meta = data["Meta Data"];
-    console.log(meta);
+    //console.log(meta);
 
-    let metaP = document.createElement("p");
-    metaP.textContent = `${meta}`;
-    id.appendChild(metaP);
+    let metaArray = Object.entries(meta);
+    for ([key, value] of metaArray){
+        let metaContainer = document.createElement("p");
+        metaContainer.innerHTML = `${key} : ${value}`;
+        id.appendChild(metaContainer);
+    }
 
-    /*meta.forEach(element => {
-        let para = document.createElement("p");
-        para.innerHTML = element;
-        id.appendChild(para);
-    });*/
+    let timeSeries = Object.keys(data)[1];
+    let timeSeriesValues = data[timeSeries];
+    let latestDate = Object.keys(timeSeriesValues).shift();
 
-    let cryptoValue = data["Time Series (Digital Currency Weekly)"];
-    let cryptoToday = cryptoValue.today;
-    console.log(cryptoToday);
-    
-    /*cryptoValue.map( element => {
-        let valueContainer = document.createElement("p");
-        valueContainer.innerHTML = element;
-        id.appendChild(valueContainer);
-    })*/
+    let pricesToday = timeSeriesValues[latestDate];
 
-    
-    let cryptoP = document.createElement("p");
-    cryptoP.innerHTML = cryptoValue;
-    id.appendChild(cryptoP);
-    
+    let todayArray = Object.entries(pricesToday);
+    for ([key, value] of todayArray){
+        let todayContainer = document.createElement("p");
+        todayContainer.innerHTML = `${key} : ${value}`;
+        id.appendChild(todayContainer);
+    }
     //document.querySelector('#bit').innerHTML = html.join();
 }
 
+function Display () {
+    reset();
+    let sortValue = document.getElementById('display');
 
-getCryptoBit(BTCurl, bitInfo);
+    let righty = document.getElementById('right_column');
+    let lefty = document.getElementById('left_column');
+    //console.log(sortValue.value);
+    if (sortValue.value == "crypto") {
+        lefty.textContent = 'Bitcoin';
+        righty.textContent = 'Etherium';
+        getCryptoInfo(BTCurl, bitInfo);
+        getCryptoInfo(ETHurl, ethInfo);
+    } else if (sortValue.value == "stocks") {
+        lefty.textContent = 'Apple';
+        righty.textContent = 'Tesla';
+        getCryptoInfo(APLurl, bitInfo);
+        getCryptoInfo(TESurl, ethInfo);
+    }
 
+}
+
+function reset () {
+    let resetLefty = document.getElementById('bit');
+    let resetRighty = document.getElementById('eth');
+    resetLefty.innerHTML = "";
+    resetRighty.innerHTML = "";
+}
+
+getCryptoInfo(BTCurl, bitInfo);
+getCryptoInfo(ETHurl, ethInfo);
+
+document.getElementById('display').addEventListener('change', Display);
 
 const thisYear = new Date();
 document.querySelector('#year').textContent = thisYear.getFullYear();
-let day = thisYear.getDate();
-let month = thisYear.getMonth() + 1;
-let year = thisYear.getFullYear();
-let today = `${year}-${month}-${day}`;
