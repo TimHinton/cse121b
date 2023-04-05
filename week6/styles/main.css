@@ -38,3 +38,7 @@ p {
     display: grid;
     grid-column: 2/3;
 }
+
+#title {
+    display: flexbox;
+}
