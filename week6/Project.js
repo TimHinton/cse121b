@@ -9,6 +9,7 @@ var TESurl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUS
 const bitInfo = document.getElementById('bit');
 const ethInfo = document.getElementById('eth');
 
+
 async function getCryptoInfo(url, id) {
     const response = await fetch(url);
     const data = await response.json();
@@ -36,7 +37,6 @@ async function getCryptoInfo(url, id) {
         todayContainer.innerHTML = `${key} : ${value}`;
         id.appendChild(todayContainer);
     }
-    //document.querySelector('#bit').innerHTML = html.join();
 }
 
 function Display () {
@@ -48,12 +48,33 @@ function Display () {
     //console.log(sortValue.value);
     if (sortValue.value == "crypto") {
         lefty.textContent = 'Bitcoin';
+        let addDivL = document.createElement("div");
+        addDivL.id = "bit";
+        lefty.appendChild(addDivL);
+
         righty.textContent = 'Etherium';
+        let addDivR = document.createElement("div");
+        addDivR.id = "eth";
+        righty.appendChild(addDivR);
+
+        const bitInfo = document.getElementById('bit');
+        const ethInfo = document.getElementById('eth');
         getCryptoInfo(BTCurl, bitInfo);
         getCryptoInfo(ETHurl, ethInfo);
+
     } else if (sortValue.value == "stocks") {
         lefty.textContent = 'Apple';
+        let addDivL = document.createElement("div");
+        addDivL.id = "bit";
+        lefty.appendChild(addDivL);
+
         righty.textContent = 'Tesla';
+        let addDivR = document.createElement("div");
+        addDivR.id = "eth";
+        righty.appendChild(addDivR);
+
+        const bitInfo = document.getElementById('bit');
+        const ethInfo = document.getElementById('eth');
         getCryptoInfo(APLurl, bitInfo);
         getCryptoInfo(TESurl, ethInfo);
     }
@@ -61,10 +82,8 @@ function Display () {
 }
 
 function reset () {
-    let resetLefty = document.getElementById('bit');
-    let resetRighty = document.getElementById('eth');
-    resetLefty.innerHTML = "";
-    resetRighty.innerHTML = "";
+    bitInfo.innerHTML = "";
+    ethInfo.innerHTML = "";
 }
 
 getCryptoInfo(BTCurl, bitInfo);
